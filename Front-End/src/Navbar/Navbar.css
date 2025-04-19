@@ -1,0 +1,40 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, rgb(211, 69, 3), rgb(255, 174, 0));
+  padding: 10px 20px;
+  color: white;
+  font-family: Arial, sans-serif;
+  background-color: rgba(247, 104, 38, 0.836);
+
+  box-shadow: 10px 10px 10px 0px rgb(102, 100, 100);
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
+}
+
+.navbar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-menu li {
+  margin-left: 20px;
+}
+
+.navbar-menu a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navbar-menu a:hover {
+  text-decoration: underline;
+}

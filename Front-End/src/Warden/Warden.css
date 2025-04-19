@@ -1,0 +1,50 @@
+.warden-container {
+  max-width: 800px;
+  margin: auto;
+  margin-top: 20px;
+  padding: 20px;
+  background: #fefefe;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  font-family: sans-serif;
+}
+
+.warden-title {
+  text-align: center;
+  color: #4caf50;
+  margin-bottom: 20px;
+}
+
+.chart-container {
+  margin-bottom: 30px;
+}
+
+.summary-box {
+  background-color: #e8f5e9;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 25px;
+}
+
+.transfer-section textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  resize: none;
+}
+
+.transfer-section button {
+  background-color: #4caf50;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.transfer-section button:hover {
+  background-color: #388e3c;
+}
