@@ -1,141 +1,151 @@
 import React, { useState } from "react";
-import "./SuperVisor.css"; // Use external CSS
+import "./SuperVisor.css";
 
-const InventoryAndAttendanceManager = () => {
-  const [inventory, setInventory] = useState([
-    { id: 1, name: "Rice", quantity: 50 },
-    { id: 2, name: "Wheat", quantity: 30 },
-    { id: 3, name: "Pulses", quantity: 20 },
-  ]);
+const defaultMenu = {
+  Sunday: {
+    breakfast: "Idli & Sambar",
+    lunch: "Veg Biryani",
+    dinner: "Chapati & Aloo Curry",
+  },
+  Monday: {
+    breakfast: "Poha",
+    lunch: "Dal Rice",
+    dinner: "Pulao & Raita",
+  },
+  Tuesday: {
+    breakfast: "Paratha",
+    lunch: "Rajma Rice",
+    dinner: "Dosa & Chutney",
+  },
+  Wednesday: {
+    breakfast: "Upma",
+    lunch: "Sambar Rice",
+    dinner: "Chapati & Veg Korma",
+  },
+  Thursday: {
+    breakfast: "Bread & Jam",
+    lunch: "Chole Rice",
+    dinner: "Pasta",
+  },
+  Friday: {
+    breakfast: "Dhokla",
+    lunch: "Curd Rice",
+    dinner: "Fried Rice",
+  },
+  Saturday: {
+    breakfast: "Vada & Chutney",
+    lunch: "Paneer Rice",
+    dinner: "Maggi",
+  },
+};
 
-  const [attendance, setAttendance] = useState([]);
+const WeeklyMealPlanner = () => {
+  const days = Object.keys(defaultMenu);
+  const [selectedWeek, setSelectedWeek] = useState("April - Week 1");
 
-  const [newAttendance, setNewAttendance] = useState({
-    date: "",
-    breakfast: "",
-    lunch: "",
-    dinner: "",
-  });
+  const [attendance, setAttendance] = useState(
+    days.map((day) => ({
+      day,
+      breakfast: "",
+      lunch: "",
+      dinner: "",
+    }))
+  );
 
-  const handleInventoryChange = (id, delta) => {
-    const updated = inventory.map((item) =>
-      item.id === id ? { ...item, quantity: item.quantity + delta } : item
+  const handleChange = (index, mealType, value) => {
+    const updated = [...attendance];
+    updated[index][mealType] = value;
+    setAttendance(updated);
+  };
+
+  const handleSubmit = () => {
+    const isFilled = attendance.every(
+      (entry) => entry.breakfast && entry.lunch && entry.dinner
     );
-    setInventory(updated);
-  };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewAttendance((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleAddAttendance = () => {
-    const { date, breakfast, lunch, dinner } = newAttendance;
-    if (!date || !breakfast || !lunch || !dinner) {
-      alert("Please fill in all fields.");
+    if (!isFilled) {
+      alert("Please enter attendance for all fields.");
       return;
     }
 
-    const newRecord = {
-      date,
-      breakfast: parseInt(breakfast, 10),
-      lunch: parseInt(lunch, 10),
-      dinner: parseInt(dinner, 10),
-    };
-
-    setAttendance((prev) => [...prev, newRecord]);
-    setNewAttendance({ date: "", breakfast: "", lunch: "", dinner: "" });
+    console.log("Weekly Attendance Submitted:", attendance);
+    alert("Attendance submitted!");
   };
 
   return (
     <div className="container12">
-      <h1 className="heading12">Mess Management System</h1>
-
-      <div className="combined-section">
-        {/* Inventory Management */}
-        <div className="section">
-          <h2 className="section-title">Inventory Management</h2>
-          <ul>
-            {inventory.map((item) => (
-              <li key={item.id} className="inventory-item">
-                {item.name}: {item.quantity} units
-                <div>
-                  <button
-                    className="button"
-                    onClick={() => handleInventoryChange(item.id, 1)}
-                  >
-                    Add
-                  </button>
-                  <button
-                    className="button"
-                    onClick={() => handleInventoryChange(item.id, -1)}
-                  >
-                    Remove
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <hr />
-
-        {/* Attendance Management */}
-        <div className="section">
-          <h2 className="section-title">Attendance Tracking</h2>
-          <div className="attendance-form">
-            <label>Date:</label>
-            <input
-              type="date"
-              name="date"
-              value={newAttendance.date}
-              onChange={handleInputChange}
-            />
-
-            <label>Breakfast Attendance:</label>
-            <input
-              type="number"
-              name="breakfast"
-              value={newAttendance.breakfast}
-              onChange={handleInputChange}
-            />
-
-            <label>Lunch Attendance:</label>
-            <input
-              type="number"
-              name="lunch"
-              value={newAttendance.lunch}
-              onChange={handleInputChange}
-            />
-
-            <label>Dinner Attendance:</label>
-            <input
-              type="number"
-              name="dinner"
-              value={newAttendance.dinner}
-              onChange={handleInputChange}
-            />
-
-            <button className="button" onClick={handleAddAttendance}>
-              Add Attendance
-            </button>
-          </div>
-
-          <ul>
-            {attendance.map((entry, i) => (
-              <li key={i}>
-                <strong>{entry.date}</strong> - 🍳 Breakfast: {entry.breakfast},
-                🍛 Lunch: {entry.lunch}, 🍽️ Dinner: {entry.dinner}
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="week-header">
+        <h1 className="heading12">Weekly Mess Menu & Attendance</h1>
+        <select
+          className="week-dropdown"
+          value={selectedWeek}
+          onChange={(e) => setSelectedWeek(e.target.value)}
+        >
+          <option>April - Week 1</option>
+          <option>April - Week 2</option>
+          <option>April - Week 3</option>
+          <option>April - Week 4</option>
+        </select>
       </div>
+
+      <table className="attendance-table">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Breakfast Menu</th>
+            <th>Lunch Menu</th>
+            <th>Dinner Menu</th>
+            <th>Breakfast Attendance</th>
+            <th>Lunch Attendance</th>
+            <th>Dinner Attendance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {days.map((day, index) => (
+            <tr key={day}>
+              <td>{day}</td>
+              <td>{defaultMenu[day].breakfast}</td>
+              <td>{defaultMenu[day].lunch}</td>
+              <td>{defaultMenu[day].dinner}</td>
+              <td>
+                <input
+                  type="number"
+                  value={attendance[index].breakfast}
+                  onChange={(e) => handleChange(index, "breakfast", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={attendance[index].lunch}
+                  onChange={(e) => handleChange(index, "lunch", e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={attendance[index].dinner}
+                  onChange={(e) => handleChange(index, "dinner", e.target.value)}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <button className="button" onClick={handleSubmit}>
+        Submit Attendance
+      </button>
+
+      <footer className="announcement-footer">
+        <h3>📢 Official Announcement</h3>
+        <p>
+          All students are requested to fill attendance before Sunday 6 PM.
+          Menu may change based on availability. Contact the mess warden for assistance.
+        </p>
+      </footer>
     </div>
   );
 };
 
-export default InventoryAndAttendanceManager;
+export default WeeklyMealPlanner;
