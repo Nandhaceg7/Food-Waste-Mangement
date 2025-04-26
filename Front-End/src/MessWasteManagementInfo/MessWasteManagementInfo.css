@@ -1,23 +1,47 @@
 .mess-info-container {
-  max-width: 700px;
+  max-width: 90%;
+  width: 700px;
   margin: 40px auto;
   padding: 24px;
-  background: linear-gradient(100deg, rgb(255, 255, 255), rgb(238, 164, 4));
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #000000 0%, #06385e 100%);
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mess-info-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
 }
 
 .mess-info-title {
-  font-size: 24px;
-  color: #2e7d32; /* dark green */
-  margin-bottom: 16px;
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 20px;
   font-weight: bold;
+  text-align: center;
 }
 
 .mess-info-text {
-  font-size: 16px;
-  line-height: 1.7;
-  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #f0f0f0;
   text-align: justify;
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 600px) {
+  .mess-info-container {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .mess-info-title {
+    font-size: 1.5rem;
+  }
+
+  .mess-info-text {
+    font-size: 1rem;
+  }
 }

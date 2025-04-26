@@ -2,39 +2,71 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, rgb(211, 69, 3), rgb(255, 174, 0));
-  padding: 10px 20px;
+  background: linear-gradient(135deg, #a07509, #8941d1);
+  padding: 15px 30px;
   color: white;
-  font-family: Arial, sans-serif;
-  background-color: rgba(247, 104, 38, 0.836);
-
-  box-shadow: 10px 10px 10px 0px rgb(102, 100, 100);
-  border-top-right-radius: 20px;
+  font-family: "Poppins", sans-serif;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
 }
 
 .navbar-logo {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navbar-logo:hover {
+  transform: scale(1.1);
 }
 
 .navbar-menu {
   list-style: none;
   display: flex;
+  align-items: center;
   margin: 0;
   padding: 0;
+  gap: 25px;
 }
 
 .navbar-menu li {
-  margin-left: 20px;
+  position: relative;
 }
 
 .navbar-menu a {
   color: white;
   text-decoration: none;
   font-size: 1rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .navbar-menu a:hover {
-  text-decoration: underline;
+  background-color: rgba(196, 66, 66, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Optional: active link underline */
+.navbar-menu a::after {
+  content: "";
+  display: block;
+  height: 2px;
+  width: 0%;
+  background: white;
+  transition: width 0.3s;
+  margin: auto;
+}
+
+.navbar-menu a:hover::after {
+  width: 100%;
 }

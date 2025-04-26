@@ -1,56 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom"; // added
 import "./SuperVisor.css";
 
-const defaultMenu = {
-  Sunday: {
-    breakfast: "Idli & Sambar",
-    lunch: "Veg Biryani",
-    dinner: "Chapati & Aloo Curry",
-  },
-  Monday: {
-    breakfast: "Poha",
-    lunch: "Dal Rice",
-    dinner: "Pulao & Raita",
-  },
-  Tuesday: {
-    breakfast: "Paratha",
-    lunch: "Rajma Rice",
-    dinner: "Dosa & Chutney",
-  },
-  Wednesday: {
-    breakfast: "Upma",
-    lunch: "Sambar Rice",
-    dinner: "Chapati & Veg Korma",
-  },
-  Thursday: {
-    breakfast: "Bread & Jam",
-    lunch: "Chole Rice",
-    dinner: "Pasta",
-  },
-  Friday: {
-    breakfast: "Dhokla",
-    lunch: "Curd Rice",
-    dinner: "Fried Rice",
-  },
-  Saturday: {
-    breakfast: "Vada & Chutney",
-    lunch: "Paneer Rice",
-    dinner: "Maggi",
-  },
-};
-
 const WeeklyMealPlanner = () => {
-  const days = Object.keys(defaultMenu);
+  const { messId } = useParams(); // added
+  const [menu, setMenu] = useState({});
   const [selectedWeek, setSelectedWeek] = useState("April - Week 1");
+  const [attendance, setAttendance] = useState([]);
+  const days = Object.keys(menu);
 
-  const [attendance, setAttendance] = useState(
-    days.map((day) => ({
-      day,
-      breakfast: "",
-      lunch: "",
-      dinner: "",
-    }))
-  );
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/get-menu");
+        const fetchedMenu = response.data;
+        setMenu(fetchedMenu);
+        console.log(fetchedMenu);
+        const initialAttendance = Object.keys(fetchedMenu).map((day) => ({
+          day,
+          breakfast: "",
+          lunch: "",
+          dinner: "",
+        }));
+        setAttendance(initialAttendance);
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+      }
+    };
+
+    fetchMenu();
+  }, []);
 
   const handleChange = (index, mealType, value) => {
     const updated = [...attendance];
@@ -58,7 +38,7 @@ const WeeklyMealPlanner = () => {
     setAttendance(updated);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const isFilled = attendance.every(
       (entry) => entry.breakfast && entry.lunch && entry.dinner
     );
@@ -68,8 +48,20 @@ const WeeklyMealPlanner = () => {
       return;
     }
 
-    console.log("Weekly Attendance Submitted:", attendance);
-    alert("Attendance submitted!");
+    try {
+      const response = await axios.post(
+        `http://localhost:5000/submit-attendance/${messId}`, // messId used here
+        {
+          selectedWeek,
+          attendance,
+        }
+      );
+      console.log(response.data);
+      alert("Attendance submitted!");
+    } catch (error) {
+      console.error("Error submitting attendance:", error);
+      alert("Already Submitted Attendance for this week !");
+    }
   };
 
   return (
@@ -104,28 +96,32 @@ const WeeklyMealPlanner = () => {
           {days.map((day, index) => (
             <tr key={day}>
               <td>{day}</td>
-              <td>{defaultMenu[day].breakfast}</td>
-              <td>{defaultMenu[day].lunch}</td>
-              <td>{defaultMenu[day].dinner}</td>
+              <td>{menu[day]?.breakfast || "-"}</td>
+              <td>{menu[day]?.lunch || "-"}</td>
+              <td>{menu[day]?.dinner || "-"}</td>
               <td>
                 <input
                   type="number"
-                  value={attendance[index].breakfast}
-                  onChange={(e) => handleChange(index, "breakfast", e.target.value)}
+                  value={attendance[index]?.breakfast || ""}
+                  onChange={(e) =>
+                    handleChange(index, "breakfast", e.target.value)
+                  }
                 />
               </td>
               <td>
                 <input
                   type="number"
-                  value={attendance[index].lunch}
+                  value={attendance[index]?.lunch || ""}
                   onChange={(e) => handleChange(index, "lunch", e.target.value)}
                 />
               </td>
               <td>
                 <input
                   type="number"
-                  value={attendance[index].dinner}
-                  onChange={(e) => handleChange(index, "dinner", e.target.value)}
+                  value={attendance[index]?.dinner || ""}
+                  onChange={(e) =>
+                    handleChange(index, "dinner", e.target.value)
+                  }
                 />
               </td>
             </tr>
@@ -140,8 +136,9 @@ const WeeklyMealPlanner = () => {
       <footer className="announcement-footer">
         <h3>📢 Official Announcement</h3>
         <p>
-          All students are requested to fill attendance before Sunday 6 PM.
-          Menu may change based on availability. Contact the mess warden for assistance.
+          All supervisor are requested to fill attendance before Sunday 6 PM. Menu
+          may change based on availability. Contact the mess warden for
+          assistance.
         </p>
       </footer>
     </div>

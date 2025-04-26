@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/supervisor" element={<LoginCard />} />
           <Route path="/warden" element={<LoginCardwar />} />
-          <Route path="/SupervisorDash" element={<SuperVisor />} />
+          <Route path="/SupervisorDash/:messId" element={<SuperVisor />} />
           <Route path="/WardenDash" element={<WardenDashboard />} />
         </Routes>
       </Router>
