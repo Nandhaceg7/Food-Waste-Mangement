@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./LoginCard.css";
+import "./Logincard.css";
 
 const LoginCard = () => {
   const [username, setUsername] = useState("");

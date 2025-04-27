@@ -32,11 +32,11 @@
   border-radius: 6px;
 }
 
-button {
+.btn {
   width: 100%;
   padding: 12px;
-  background-color: #2e7d32;
-  color: white;
+  background: linear-gradient(135deg, #012bff 0%, #817c7c 100%);
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 6px;
   font-size: 16px;
@@ -46,5 +46,5 @@ button {
 }
 
 button:hover {
-  background-color: #1b5e20;
+  background: linear-gradient(135deg, #060607 0%, #8904ef 100%);
 }

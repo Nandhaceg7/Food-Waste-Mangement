@@ -9,6 +9,7 @@ const WeeklyMealPlanner = () => {
   const [selectedWeek, setSelectedWeek] = useState("April - Week 1");
   const [attendance, setAttendance] = useState([]);
   const days = Object.keys(menu);
+  const [information, setInformation] = useState([]);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -64,6 +65,24 @@ const WeeklyMealPlanner = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getInformation");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        setInformation(result);
+        console.log(result);
+      } catch (error) {
+        console.error("Error fetching information:", error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="container12">
       <div className="week-header">
@@ -77,6 +96,10 @@ const WeeklyMealPlanner = () => {
           <option>April - Week 2</option>
           <option>April - Week 3</option>
           <option>April - Week 4</option>
+          <option>May - Week 1</option>
+          <option>May - Week 2</option>
+          <option>May - Week 3</option>
+          <option>May- Week 4</option>
         </select>
       </div>
 
@@ -136,9 +159,11 @@ const WeeklyMealPlanner = () => {
       <footer className="announcement-footer">
         <h3>📢 Official Announcement</h3>
         <p>
-          All supervisor are requested to fill attendance before Sunday 6 PM. Menu
-          may change based on availability. Contact the mess warden for
-          assistance.
+          {information.map((item, index) => (
+            <div className="info-data">
+              <p key={index}>{item.data}</p>
+            </div>
+          ))}
         </p>
       </footer>
     </div>

@@ -4,9 +4,9 @@ import MessWasteManagementInfo from "../MessWasteManagementInfo/MessWasteManagem
 import { Link } from "react-router-dom";
 
 export default function Home() {
-  const [menu, setMenu] = useState({});  
+  const [menu, setMenu] = useState({});
+  const [information, setInformation] = useState([]);
 
- 
   useEffect(() => {
     const fetchMenuData = async () => {
       try {
@@ -22,6 +22,24 @@ export default function Home() {
     };
 
     fetchMenuData();
+  }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/getInformation");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const result = await response.json();
+        setInformation(result);
+        console.log(result);
+      } catch (error) {
+        console.error("Error fetching information:", error.message);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -40,7 +58,12 @@ export default function Home() {
       <div className="off">
         <h1>Official Information</h1>
 
-        
+        {information.map((item, index) => (
+          <div className="info-data">
+            <p key={index}>{item.data}</p>
+          </div>
+        ))}
+
         <h3 style={{ textAlign: "center", marginTop: "20px" }}>Weekly Menu</h3>
         <div className="menu-table-container">
           <table className="menu-table">

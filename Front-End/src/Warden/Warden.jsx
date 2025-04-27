@@ -22,8 +22,23 @@ const WardenDashboard = () => {
     "Friday",
     "Saturday",
   ];
-  const weekOptions = ["April - Week 1", "April - Week 2", "April - Week 3"];
-  const messOptions = ["Mess-1", "Mess-2", "Mess-3"];
+  const weekOptions = [
+    "April - Week 1",
+    "April - Week 2",
+    "April - Week 3",
+    "April - Week 4",
+    "May - Week 1",
+    "May - Week 2",
+    "May - Week 3",
+    "May - Week 4",
+  ];
+  const messOptions = [
+    "Pg-non-veg-mess",
+    "veg-mess",
+    "mega-mess",
+    "ug-non-veg-mess",
+    "ug-veg-mess",
+  ];
   const [selectedWeek, setSelectedWeek] = useState("April - Week 1");
   const [selectedMess, setSelectedMess] = useState("Mess 1");
 
@@ -115,10 +130,12 @@ const WardenDashboard = () => {
         console.log(data);
 
         const breakfast = data.map((item) =>
-          Math.round((item.breakfast / 5) * 100)
+          Math.round((item.breakfast / 200) * 100)
         );
-        const lunch = data.map((item) => Math.round((item.lunch / 5) * 100));
-        const dinner = data.map((item) => Math.round((item.dinner / 5) * 100));
+        const lunch = data.map((item) => Math.round((item.lunch / 200) * 100));
+        const dinner = data.map((item) =>
+          Math.round((item.dinner / 200) * 100)
+        );
 
         setBreakfastDataPoints(breakfast);
         setLunchDataPoints(lunch);

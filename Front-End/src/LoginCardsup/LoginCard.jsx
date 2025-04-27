@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import "./LoginCard.css"; // Import the CSS file
+import "./Logincard.css"; // Import the CSS file
 
 function LoginCard() {
   const [username, setUsername] = useState("");
@@ -60,7 +60,9 @@ function LoginCard() {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" className="btn">
+          Login
+        </button>
       </form>
       {message && (
         <p

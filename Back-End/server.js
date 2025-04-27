@@ -87,9 +87,12 @@ app.get("/api/attendance", async (req, res) => {
   console.log(week);
   console.log(mess);
 
-  let messId = 102;
-  if (mess === "Mess 1") messId = 101;
-  if (mess === "Mess 3") messId = 102;
+  let messId = 101;
+  if (mess === "pg-non-veg-mess") messId = 101;
+  if (mess === "veg-mess") messId = 102;
+  if (mess === "mega-mess") messId = 103;
+  if (mess === "ug-non-veg-mess") messId = 104;
+  if (mess === "ug-veg-mess") messId = 105;
 
   try {
     const result = await sql`
@@ -140,7 +143,16 @@ app.post("/api/updateMenu", async (req, res) => {
   }
 });
 
-// Add the following to your server.js or appropriate route handler
+app.get("/getInformation", async (req, res) => {
+  try {
+    const data = await sql`select * from information`;
+    console.log("Fetched Data:", data);
+    res.json(data || []);
+  } catch (error) {
+    console.error("Error fetching information:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+});
 
 app.post("/api/saveOfficialInfo", async (req, res) => {
   const { data } = req.body;
@@ -162,3 +174,13 @@ app.post("/api/saveOfficialInfo", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
+
+
+
+
+
+
+
+
