@@ -9,24 +9,52 @@ const PORT = 5000;
 app.use(cors());
 app.use(express.json());
 
+// app.post("/login", async (req, res) => {
+//   const { username, password } = req.body;
+//   try {
+//     const retr =
+//       await sql`select * from messdata where mess_name=${username} and password=${password}`;
+//     console.log(retr);
+//     if (!retr) {
+//       console.error("Database error:", error.message);
+//       return res.status(500).json({ message: "Database error" });
+//     }
+
+//     if (retr) {
+//       console.log(retr);
+//       console.log("Login success:");
+//       // Send the user data and redirect URL as part of the response
+//       res.status(200).json({
+//         message: "Login successful",
+//         retr,
+//         redirectUrl: `/SupervisorDash/${retr[0].mess_id}`, // Send the URL for client-side redirection
+//       });
+//     } else {
+//       console.log("Login failed: No matching user");
+//       res.status(401).json({ message: "Invalid username or password" });
+//     }
+//   } catch (err) {
+//     console.error("Server error:", err.message);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
+
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
   try {
     const retr =
       await sql`select * from messdata where mess_name=${username} and password=${password}`;
     console.log(retr);
-    if (!retr) {
-      console.error("Database error:", error.message);
-      return res.status(500).json({ message: "Database error" });
-    }
 
-    if (retr) {
+    // Check if the array contains at least one row
+    if (retr.length > 0) {
       console.log("Login success:");
-      // Send the user data and redirect URL as part of the response
+      // Access the first element of the array
+      const userData = retr[0];
       res.status(200).json({
         message: "Login successful",
         retr,
-        redirectUrl: `/SupervisorDash/${retr[0].mess_id}`, // Send the URL for client-side redirection
+        redirectUrl: `/SupervisorDash/${userData.mess_id}`,
       });
     } else {
       console.log("Login failed: No matching user");
@@ -37,7 +65,6 @@ app.post("/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
 app.get("/get-menu", async (req, res) => {
   const data = await sql`select * from menu`;
 
@@ -174,13 +201,3 @@ app.post("/api/saveOfficialInfo", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
-
-
-
-
-
-
-
-
-
